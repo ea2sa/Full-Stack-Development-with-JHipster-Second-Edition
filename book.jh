@@ -1,0 +1,32 @@
+entity Publisher {
+  name String required unique maxlength(100)
+}
+
+entity Author {
+  firstName String required maxlength(DEFAULT_MAX_LENGTH)
+  lastName String required maxlength(DEFAULT_MAX_LENGTH)
+}
+
+entity Book{
+  isbn String required unique minlength(5) maxlength(13)
+  name String required maxlength(100)
+  publishYear String required minlength(DEFAULT_MIN_LENGTH) maxlength(DEFAULT_MAX_LENGTH)
+  copies Integer required
+  cover ImageBlob
+}
+
+
+
+relationship OneToOne {
+  Book{publisher(name)} to Publisher
+}
+
+relationship ManyToMany {
+  Book{author(firstName)} to Author{book}
+}
+
+filter Book, Author, Publisher
+
+paginate Book, Author, Publisher with pagination
+
+service all with serviceImpl
